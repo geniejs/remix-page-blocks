@@ -1,22 +1,23 @@
 {
   "name": "remix-page-blocks",
   "version": "0.7.0",
+  "private": true,
   "description": "A collection of functional blocks: Header, Footer, Hero, Banner, Features, Logo Clouds, Community, Embeded Video, Testimonials, FAQ, Contact, Newsletter, and more.",
   "homepage": "https://remix-page-blocks.vercel.app",
-  "repository": "https://github.com/AlexandroMtzG/remix-page-blocks",
   "bugs": "https://github.com/AlexandroMtzG/remix-page-blocks/issues",
+  "repository": "https://github.com/AlexandroMtzG/remix-page-blocks",
   "author": "Alexandro Martinez",
-  "private": true,
   "sideEffects": false,
   "scripts": {
+    "serve": "cross-env NODE_ENV=production SESSION_SECRET=please88 SERVER_URL=https://jepperson.us remix-serve ./build",
     "build": "npm run build:css && cross-env NODE_ENV=production remix build",
     "build:css": "tailwindcss -m -i ./styles/app.css -o app/styles/app.css",
     "dev": "concurrently \"npm run dev:css\" \"cross-env NODE_ENV=development remix dev\"",
     "dev:css": "tailwindcss -w -i ./styles/app.css -o app/styles/app.css",
-    "lint": "eslint --ext .tsx,.ts .",
     "postinstall": "remix setup node",
-    "typecheck": "tsc -b",
-    "prettier": "prettier --write '**/*.{ts,tsx}'"
+    "lint": "eslint --ext .tsx,.ts .",
+    "prettier": "prettier --write '**/*.{ts,tsx}'",
+    "typecheck": "tsc -b"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.5",

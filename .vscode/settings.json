@@ -20,5 +20,6 @@
     "app.shared.yearly.*",
     "app.shared.colors.*",
     "api.errors.*"
-  ]
+  ],
+  "editor.cursorStyle": "block"
 }
