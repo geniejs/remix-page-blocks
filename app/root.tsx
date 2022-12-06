@@ -6,7 +6,6 @@ import { loadRootData, useRootData } from "./utils/data/useRootData";
 import clsx from "clsx";
 import Page404 from "./components/pages/Page404";
 import FloatingLoader from "./components/transitions/FloatingLoader";
-import { useChangeLanguage } from "remix-i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 
