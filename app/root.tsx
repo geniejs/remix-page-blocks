@@ -8,6 +8,7 @@ import Page404 from "./components/pages/Page404";
 import FloatingLoader from "./components/transitions/FloatingLoader";
 import { useChangeLanguage } from "remix-i18next";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
@@ -33,12 +34,11 @@ function Document({ children }: { children: React.ReactNode; title?: string }) {
   const rootData = useRootData();
 
   let { i18n } = useTranslation();
-  // This hook will change the i18n instance language to the current locale
-  // detected by the loader, this way, when we do something to change the
-  // language, this locale will change and i18next will load the correct
-  // translation files
-  console.log("rootData.userSession?.lng :>> ", rootData.userSession?.lng);
-  //useChangeLanguage(rootData.userSession?.lng ?? "en");
+  useEffect(() => {
+    if (rootData.userSession?.lng && i18n && i18n.changeLanguage) {
+      i18n.changeLanguage(rootData.userSession?.lng);
+    }
+  }, [i18n, rootData.userSession?.lng]);
   return (
     <html
       key={rootData.userSession?.lng}
