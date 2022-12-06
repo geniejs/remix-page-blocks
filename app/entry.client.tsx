@@ -6,6 +6,9 @@ import { hydrate } from "react-dom";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { getInitialNamespaces } from "remix-i18next";
 import i18n from "./i18n"; // your i18n configuration file
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 i18next
   .use(initReactI18next) // Tell i18next to use the react-i18next plugin
