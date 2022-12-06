@@ -2,12 +2,12 @@ import { Link } from "@remix-run/react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { CommunityBlockDto } from "~/application/dtos/marketing/CommunityBlockDto";
-
+import { Image } from "~/components/primitives/Image";
 export default function CommunitySimple({ item }: { item: CommunityBlockDto }) {
   const { t } = useTranslation();
   return (
     <div>
-      <div className="mx-auto max-w-7xl py-12 px-4 text-center sm:px-6 lg:px-8 lg:py-24">
+      <div className="CommunitySimple mx-auto max-w-7xl py-12 px-4 text-center sm:px-6 lg:px-8 lg:py-24">
         <div className="space-y-8 sm:space-y-12">
           <div className="space-y-5 sm:mx-auto sm:max-w-xl sm:space-y-4 lg:max-w-5xl">
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{t(item.headline)}</h2>
@@ -61,7 +61,7 @@ export default function CommunitySimple({ item }: { item: CommunityBlockDto }) {
               {item.members.map((item) => (
                 <li key={item.user}>
                   <div className="space-y-4">
-                    <img className="mx-auto h-16 w-16 rounded-full lg:h-20 lg:w-20" src={item.avatar_url} alt={item.user} />
+                    <Image className="mx-auto h-16 w-16 rounded-full lg:h-20 lg:w-20" src={item.avatar_url} alt={item.user} />
                     <div>
                       <div className="mt-2 text-xs font-medium lg:text-sm">
                         <h4 className="truncate text-gray-500">{item.user}</h4>
