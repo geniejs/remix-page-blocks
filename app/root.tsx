@@ -1,12 +1,13 @@
-import { ActionFunction, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { ActionFunction, json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch, useLoaderData } from "@remix-run/react";
 import styles from "./styles/app.css";
-import { useSetupTranslations } from "remix-i18next";
 import { createUserSession, getUserInfo } from "./utils/session.server";
 import { loadRootData, useRootData } from "./utils/data/useRootData";
 import clsx from "clsx";
 import Page404 from "./components/pages/Page404";
 import FloatingLoader from "./components/transitions/FloatingLoader";
+import { useChangeLanguage } from "remix-i18next";
+import { useTranslation } from "react-i18next";
 
 export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
@@ -16,6 +17,14 @@ export let loader: LoaderFunction = async ({ request }) => {
   return loadRootData(request);
 };
 
+export let handle = {
+  // In the handle export, we can add a i18n key with namespaces our route
+  // will need to load. This key can be a single string or an array of strings.
+  // TIP: In most cases, you should set this to your defaultNS from your i18n config
+  // or if you did not set one, set it to the i18next default namespace "translations"
+  i18n: "translations",
+};
+
 export const meta: MetaFunction = ({ data }) => ({
   ...data?.metaTags,
 });
@@ -23,11 +32,19 @@ export const meta: MetaFunction = ({ data }) => ({
 function Document({ children }: { children: React.ReactNode; title?: string }) {
   const rootData = useRootData();
 
+  let { i18n } = useTranslation();
+  // This hook will change the i18n instance language to the current locale
+  // detected by the loader, this way, when we do something to change the
+  // language, this locale will change and i18next will load the correct
+  // translation files
+  console.log("rootData.userSession?.lng :>> ", rootData.userSession?.lng);
+  //useChangeLanguage(rootData.userSession?.lng ?? "en");
   return (
     <html
       key={rootData.userSession?.lng}
       lang={rootData.userSession?.lng}
       className={clsx(rootData.userSession?.lightOrDarkMode === "dark" ? "dark bg-gray-900" : "", " bg-white")}
+      dir={i18n.dir()}
     >
       <head>
         <Meta />
@@ -90,8 +107,6 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function App() {
-  let { lng } = useLoaderData<{ lng: string }>();
-  useSetupTranslations(lng ?? "en");
   return (
     <Document>
       <Outlet />

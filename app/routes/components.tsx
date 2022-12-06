@@ -1,9 +1,7 @@
 import Footer from "~/components/front/Footer";
 import Header from "~/components/front/Header";
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
-import { i18nHelper } from "~/locale/i18n.utils";
 import ServerError from "~/components/ui/ServerError";
-import { Language } from "remix-i18next";
 import WarningBanner from "~/components/ui/WarningBanner";
 import ButtonPrimary from "~/components/ui/ButtonPrimary";
 import ButtonSecondary from "~/components/ui/ButtonSecondary";
@@ -28,13 +26,10 @@ import OpenModal from "~/components/ui/OpenModal";
 
 type LoaderData = {
   title: string;
-  i18n: Record<string, Language>;
 };
 export let loader: LoaderFunction = async ({ request }) => {
-  let { translations } = await i18nHelper(request);
   const data: LoaderData = {
     title: `Components`,
-    i18n: translations,
   };
   return json(data);
 };

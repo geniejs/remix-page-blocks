@@ -1,4 +1,5 @@
 import { createCookieSessionStorage, redirect, Session } from "@remix-run/node";
+import i18next from "~/i18n.server";
 
 export type UserSession = {
   lightOrDarkMode: string;
@@ -32,7 +33,7 @@ export function getUserSession(request: Request) {
 export async function getUserInfo(request: Request): Promise<UserSession> {
   const session = await getUserSession(request);
   const lightOrDarkMode = session.get("lightOrDarkMode") ?? "";
-  const lng = session.get("lng") ?? "en";
+  const lng = session.get("lng") ?? (await i18next.getLocale(request)) ?? "en";
   return {
     lightOrDarkMode,
     lng,

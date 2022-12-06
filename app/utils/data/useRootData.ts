@@ -1,8 +1,8 @@
-import { json } from "@remix-run/node";
 import { useMatches } from "@remix-run/react";
 import { MetaTagsDto } from "~/application/dtos/seo/MetaTagsDto";
 import { getSeoMetaTags } from "../services/seoService";
 import { getUserInfo, UserSession } from "../session.server";
+import { json } from "@remix-run/node";
 
 export type AppRootData = {
   title: string;

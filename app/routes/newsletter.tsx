@@ -3,21 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActionFunction, json, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { Form, useActionData, useTransition } from "@remix-run/react";
-import { Language } from "remix-i18next";
 import Footer from "~/components/front/Footer";
 import Header from "~/components/front/Header";
-import { i18nHelper } from "~/locale/i18n.utils";
 import OpenModal from "~/components/ui/OpenModal";
+import i18n from "~/i18n.server";
 
 type LoaderData = {
   title: string;
-  i18n: Record<string, Language>;
 };
 export let loader: LoaderFunction = async ({ request }) => {
-  let { t, translations } = await i18nHelper(request);
+  let t = await i18n.getFixedT(request);
+
   const data: LoaderData = {
     title: `${t("newsletter.headline")} | ${process.env.APP_NAME}`,
-    i18n: translations,
   };
   return json(data);
 };
@@ -27,7 +25,7 @@ export const meta: MetaFunction = ({ data }) => ({
 });
 
 export const action: ActionFunction = async ({ request }) => {
-  const { t } = await i18nHelper(request);
+  let t = await i18n.getFixedT(request);
   await new Promise((res) => setTimeout(res, 1000));
   const formData = await request.formData();
   const firstName = formData.get("first_name")?.toString() ?? "";

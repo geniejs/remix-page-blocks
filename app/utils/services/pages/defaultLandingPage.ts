@@ -1,4 +1,3 @@
-import { TFunction } from "react-i18next";
 import { BannerBlockStyle } from "~/application/dtos/marketing/BannerBlockDto";
 import { CommunityBlockStyle } from "~/application/dtos/marketing/CommunityBlockDto";
 import { FaqBlockStyle } from "~/application/dtos/marketing/FaqBlockDto";
@@ -30,7 +29,7 @@ const defaultStyles = {
   faq: FaqBlockStyle.simple,
 };
 
-export function defaultLandingPage({ t }: { t: TFunction }) {
+export function defaultLandingPage({ t }: { t: Function }) {
   const blocks: PageBlockDto[] = [
     // Banner
     {

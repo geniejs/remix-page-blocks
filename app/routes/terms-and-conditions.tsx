@@ -1,14 +1,13 @@
 import Header from "~/components/front/Header";
 import { useTranslation } from "react-i18next";
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
-import { i18nHelper } from "~/locale/i18n.utils";
 import Footer from "~/components/front/Footer";
+import i18n from "~/i18n.server";
 
 export let loader: LoaderFunction = async ({ request }) => {
-  let { t, translations } = await i18nHelper(request);
+  let t = await i18n.getFixedT(request);
   return json({
     title: `${t("terms.headline")} | ${process.env.APP_NAME}`,
-    i18n: translations,
   });
 };
 

@@ -2,22 +2,19 @@ import Footer from "~/components/front/Footer";
 import Header from "~/components/front/Header";
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
-import { i18nHelper } from "~/locale/i18n.utils";
 import ServerError from "~/components/ui/ServerError";
-import { Language } from "remix-i18next";
 import { useLoaderData } from "@remix-run/react";
 import WarningBanner from "~/components/ui/WarningBanner";
+import i18n from "~/i18n.server";
 
 type LoaderData = {
   title: string;
-  i18n: Record<string, Language>;
   formUrl: string;
 };
 export let loader: LoaderFunction = async ({ request }) => {
-  let { t, translations } = await i18nHelper(request);
+  let t = await i18n.getFixedT(request);
   const data: LoaderData = {
     title: `${t("contact.headline")} | ${process.env.APP_NAME}`,
-    i18n: translations,
     formUrl: process.env.CONTACT_FORMSPREE?.toString() ?? "",
   };
   return json(data);
