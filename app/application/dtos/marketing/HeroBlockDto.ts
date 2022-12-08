@@ -1,11 +1,12 @@
 import { BlockDto } from "../BlockDto";
+import { ImageBlockDto } from "../primitives/ImageBlockDto";
 import { TextWithLinkDto } from "./TextWithLinkDto";
 
 export interface HeroBlockDto extends BlockDto {
   style: HeroBlockStyle | string;
   headline: string;
   subheadline: string;
-  image?: string;
+  image?: ImageBlockDto;
   topText?: TextWithLinkDto;
   cta: {
     text: string;

@@ -8,6 +8,11 @@ import { getInitialNamespaces } from "remix-i18next";
 import i18n from "./i18n"; // your i18n configuration file
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+const { GSDevTools } = require("~/utils/gsap/GSDevTools3");
+// import { GSDevTools } from "gsap/GSDevTools";
+// gsap.registerPlugin(GSDevTools);
+gsap.registerPlugin(GSDevTools);
+
 gsap.registerPlugin(ScrollTrigger);
 i18next
   .use(initReactI18next) // Tell i18next to use the react-i18next plugin

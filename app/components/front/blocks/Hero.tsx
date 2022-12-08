@@ -11,6 +11,4 @@ function Hero({ item }: { item: HeroBlockDto }) {
   );
 }
 
-export default function Extended({ item }: { item: HeroBlockDto }) {
-  return blockExtender(Hero, { item });
-}
+export default blockExtender(Hero);

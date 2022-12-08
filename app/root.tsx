@@ -8,6 +8,8 @@ import Page404 from "./components/pages/Page404";
 import FloatingLoader from "./components/transitions/FloatingLoader";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
+import { gsap } from "gsap";
+const { GSDevTools } = require("~/utils/gsap/GSDevTools3");
 
 export let links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
@@ -31,13 +33,21 @@ export const meta: MetaFunction = ({ data }) => ({
 
 function Document({ children }: { children: React.ReactNode; title?: string }) {
   const rootData = useRootData();
-
   let { i18n } = useTranslation();
   useEffect(() => {
+    window.gsap = gsap;
+
     if (rootData.userSession?.lng && i18n && i18n.changeLanguage) {
       i18n.changeLanguage(rootData.userSession?.lng);
     }
   }, [i18n, rootData.userSession?.lng]);
+
+  useEffect(() => {
+    if (rootData.debug) {
+      GSDevTools.create();
+    }
+  }, [rootData.debug]);
+
   return (
     <html
       key={rootData.userSession?.lng}
@@ -71,6 +81,7 @@ function Document({ children }: { children: React.ReactNode; title?: string }) {
         <LiveReload />
         <FloatingLoader />
         <ScrollRestoration />
+        {/* <script src="./gsap/GSDevTools3.js"></script> */}
         <Scripts />
       </body>
     </html>
@@ -135,25 +146,46 @@ export function CatchBoundary() {
 export function ErrorBoundary({ error }: { error: Error }) {
   const data = useRootData();
   return (
-    <Document title="Unexpected error">
-      <div className="mx-auto p-12 text-center">
-        <h1>
-          Server error,{" "}
-          <button type="button" onClick={() => window.location.reload()} className="underline">
-            please try again
-          </button>
-          {data.debug && (
-            <div className="flex flex-col space-y-1 text-left">
-              <div>
-                <span className="font-bold">Message:</span> {error.message}
-              </div>
-              <div>
-                <span className="font-bold">Stack:</span> {error.stack}
-              </div>
-            </div>
-          )}
-        </h1>
-      </div>
-    </Document>
+    <html>
+      <head>
+        <Meta />
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <Links />
+      </head>
+
+      <body className="max-h-full min-h-screen max-w-full bg-white text-gray-800 dark:bg-slate-900 dark:text-white">
+        <div title="Unexpected error">
+          <div className="mx-auto p-12 text-center">
+            <h1>
+              Server error,{" "}
+              <button type="button" onClick={() => window.location.reload()} className="underline">
+                please try again
+              </button>
+              {data.debug && (
+                <div className="flex flex-col space-y-1 text-left">
+                  <div>
+                    <span className="font-bold">Message:</span> {error.message}
+                  </div>
+                  <div>
+                    <span className="font-bold">Stack:</span> {error.stack}
+                  </div>
+                </div>
+              )}
+            </h1>
+          </div>
+        </div>
+
+        <LiveReload />
+        <FloatingLoader />
+        <ScrollRestoration />
+        {/* <script src="./gsap/GSDevTools3.js"></script> */}
+        <Scripts />
+      </body>
+    </html>
   );
 }

@@ -46,20 +46,61 @@ export function defaultLandingPage({ t }: { t: Function }) {
     // Hero
     {
       hero: {
-        gsap: [
-          {
-            id: "hero",
-          },
-        ],
-        observer: [
-          {
-            type: "pointer",
-          },
-        ],
-        style: defaultStyles.hero,
+        style: HeroBlockStyle.image,
         headline: t("blocks.hero.headline"),
         subheadline: t("blocks.hero.subheadline"),
-        image: "https://via.placeholder.com/720x600?text=Your%20Hero%20Image",
+        image: {
+          src: "https://via.placeholder.com/720x600?text=Your%20Hero%20Image",
+          timelines: [
+            {
+              scrollTrigger: {
+                start: "center bottom",
+                end: "center top",
+                scrub: true,
+                markers: true,
+              },
+              id: "heroImage",
+              tweens: [
+                {
+                  to: {
+                    vars: {
+                      scale: 1.2,
+                    },
+                    position: 1,
+                  },
+                },
+                {
+                  to: {
+                    vars: {
+                      scale: 1,
+                    },
+                    position: 2,
+                  },
+                },
+              ],
+            },
+          ],
+          observers: [
+            {
+              type: "pointer",
+              onHover: [
+                {
+                  to: {
+                    vars: {
+                      scale: 1.2,
+                    },
+                    position: 1,
+                  },
+                },
+              ],
+              onHoverEnd: [
+                {
+                  refresh: true,
+                },
+              ],
+            },
+          ],
+        },
         cta: [
           {
             text: t("blocks.hero.cta.primary"),

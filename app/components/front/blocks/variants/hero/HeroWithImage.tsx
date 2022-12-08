@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { HeroBlockDto } from "~/application/dtos/marketing/HeroBlockDto";
+import Image from "~/components/primitives/Image";
 
 export default function HeroWithImage({ item }: { item: HeroBlockDto }) {
   const { t } = useTranslation();
@@ -71,7 +72,7 @@ export default function HeroWithImage({ item }: { item: HeroBlockDto }) {
           </div>
         </div>
         <div className="dark:border-border-300 w-5/6 rounded-lg border-2 border-dashed border-gray-800 md:w-1/2 lg:w-full lg:max-w-lg">
-          <img className="rounded object-cover object-center" alt="hero" src={item.image ?? "https://dummyimage.com/720x600"} />
+          {item.image && <Image item={item.image} />}
         </div>
       </div>
     </section>
