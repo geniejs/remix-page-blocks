@@ -46,6 +46,16 @@ export function defaultLandingPage({ t }: { t: Function }) {
     // Hero
     {
       hero: {
+        gsap: [
+          {
+            id: "hero",
+          },
+        ],
+        observer: [
+          {
+            type: "pointer",
+          },
+        ],
         style: defaultStyles.hero,
         headline: t("blocks.hero.headline"),
         subheadline: t("blocks.hero.subheadline"),

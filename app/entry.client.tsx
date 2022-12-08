@@ -9,7 +9,6 @@ import i18n from "./i18n"; // your i18n configuration file
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
-
 i18next
   .use(initReactI18next) // Tell i18next to use the react-i18next plugin
   .use(LanguageDetector) // Setup a client-side language detector

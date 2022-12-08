@@ -1,6 +1,7 @@
+import { BlockDto } from "../BlockDto";
 import { TextWithLinkDto } from "./TextWithLinkDto";
 
-export interface HeroBlockDto {
+export interface HeroBlockDto extends BlockDto {
   style: HeroBlockStyle | string;
   headline: string;
   subheadline: string;

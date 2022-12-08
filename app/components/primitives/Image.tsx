@@ -1,7 +1,8 @@
 //React image component using daisyUI
 import clsx from "clsx";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import getScrollTrigger from "~/utils/helpers/imports.client";
 
 export const Image = ({
   src,
@@ -9,57 +10,47 @@ export const Image = ({
   className = "",
   rounded = false,
   maxScale = 200,
-  offset = 50,
   ...props
-}: { src: string; alt: string; rounded?: boolean; className?: string; maxScale: number; offset: number } & Record<string, unknown>) => {
+}: { src: string; alt: string; rounded?: boolean; className?: string; maxScale: number } & Record<string, unknown>) => {
   const image = useRef<HTMLImageElement>(null);
-  const calculateDistance = useCallback(
-    (el: Element) => {
-      let distanceFromCenter = maxScale;
-      const center = window.innerHeight / 2;
-      if (image.current) {
-        // Get the bounding client rectangle of the image
-        const rect = image.current.getBoundingClientRect();
-
-        const imageCenter = rect.top + rect.height / 2;
-        // Check if the element is above the fold
-        if (rect.top + window.scrollY >= window.innerHeight) {
-          // Calculate the distance of the image from the center of the screen
-
-          distanceFromCenter = Math.abs(imageCenter - center - offset);
-        } else {
-          return 100;
-        }
-      }
-      return Math.max(100, Math.min(maxScale, maxScale + offset - (distanceFromCenter / center) * maxScale));
-    },
-    [maxScale, offset]
-  );
-
   useEffect(() => {
+    let tl: gsap.core.Timeline;
     if (image.current) {
-      gsap.to(image.current, {
+      tl = gsap.timeline({
         scrollTrigger: {
           trigger: image.current,
-          start: "top bottom",
-          end: "bottom top",
+          start: "center bottom",
+          end: "center top",
           scrub: true,
           markers: true,
-          onUpdate: (self) => {
-            gsap.set(image.current, { scale: calculateDistance(self.scroller as Element) / 100 });
-          },
         },
-        // Other animation properties
+        id: "image",
+      });
+      tl.to(image.current, { scale: maxScale / 100 }, 1).to(image.current, { scale: 1 }, 2);
+      const ScrollTrigger = getScrollTrigger && getScrollTrigger();
+
+      ScrollTrigger.observe({
+        target: image.current, // can be any element (selector text is fine)
+        type: "pointer", // comma-delimited list of what to listen for ("wheel,touch,scroll,pointer")
+        onHover: () => {
+          gsap.set(image.current, { scale: maxScale / 100 });
+        },
+        onHoverEnd: () => {
+          tl.scrollTrigger?.refresh();
+        },
       });
     }
-  }, [calculateDistance, maxScale]);
+    return () => {
+      tl.kill();
+    };
+  }, [maxScale]);
 
   return (
     <img
       ref={image}
       src={src}
       alt={alt}
-      className={clsx(className, `object-cover object-center transition-all`, ``, {
+      className={clsx(className, `object-cover object-center`, {
         rounded: rounded,
       })}
       {...props}
